@@ -4,10 +4,12 @@ class ArticlesController < ApplicationController
 
   def index
     @articles = Article.all
+    
   end
   
   def show
     @article = Article.find(params[:id])
+
   end
 
   def new
@@ -20,8 +22,10 @@ class ArticlesController < ApplicationController
 
   def create
     @article = Article.new(article_params)
+    @user_id = current_user.id
     if @article.save
       redirect_to @article
+
     else 
       render 'new'
     end
@@ -46,7 +50,7 @@ class ArticlesController < ApplicationController
 
   private
   def article_params
-    params.require(:article).permit(:title, :text)
+    params.require(:article).permit(:title, :text).merge(user_id: current_user.id)
   end
 
 end
